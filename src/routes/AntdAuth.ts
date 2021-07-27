@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 // import { paramMissingError } from "@shared/constants";
 
 // const userDao = new UserDao();
-const { OK, UNAUTHORIZED } = StatusCodes;
+const { OK, UNAUTHORIZED, BAD_REQUEST } = StatusCodes;
 
 /**
  * Get all users.
@@ -183,10 +183,27 @@ export function login(req: Request, res: Response) {
   }
 
   access = "guest";
-  return res.status(OK).json({
+  /* return res.status(OK).json({
     status: "error",
     type,
     currentAuthority: "guest",
+  }); */
+  return res.status(BAD_REQUEST).json({
+    errorCode: "1001ABC",
+    traceId: "someid",
+    errors: [
+      {
+        id: "username",
+        messages: [
+          "El nombre solo puede contener caracteres alfabeticos",
+          "Error 2",
+        ],
+      },
+      {
+        id: "password",
+        messages: ["Existe un instructor con este número de identificación"],
+      },
+    ],
   });
 }
 
